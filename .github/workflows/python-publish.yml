@@ -18,7 +18,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.x'  
+          python-version: '3.6' 
 
       - name: Install build dependencies
         run: |
@@ -26,10 +26,9 @@ jobs:
 
       - name: Build the package
         run: |
-          python -m build  # Vytvoří distribuce balíčku (whl, tar.gz)
-
+          python -m build  
       - name: Upload the package to PyPI
-        uses: pypa/gh-action-pypi-publish@v1
+        uses: pypa/gh-action-pypi-publish@v2  
         with:
           user: ${{ secrets.PYPI_USERNAME }}
-          password: ${{ secrets.PYPI_PASSWORD }}
+          password: ${{ secrets.PYPI_API_TOKEN }}
