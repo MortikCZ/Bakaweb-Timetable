@@ -6,7 +6,7 @@ from collections import defaultdict
 
 def download_html(url):
     response = requests.get(url)
-    if response.status_code == 200:
+    if (response.status_code == 200):
         return response.text
     else:
         print(f"Failed to retrieve the page from {url}. Status code: {response.status_code}")
@@ -31,9 +31,12 @@ def filter_and_save_data(data_details, output_file):
     filtered_data = defaultdict(list)
     for entry in data_details:
         subjecttext = entry.get("subjecttext", "")
+        print(f"Debug: Processing subjecttext: {subjecttext}")  # Debug statement
+
         match = re.match(r"(.+?) \| (.+?) \| (.+)", subjecttext)
         if match:
             subject, date, hour = match.groups()
+            print(f"Debug: Matched subject: {subject}, date: {date}, hour: {hour}")  # Debug statement
             filtered_data[date].append({
                 "subject": subject,
                 "hour": hour,
@@ -49,6 +52,7 @@ def filter_and_save_data(data_details, output_file):
             match = re.match(r"(.+?) \| (.+)", subjecttext)
             if match:
                 date, hour = match.groups()
+                print(f"Debug: Matched date: {date}, hour: {hour}")  # Debug statement
                 filtered_data[date].append({
                     "subject": "",
                     "hour": hour,
@@ -61,6 +65,7 @@ def filter_and_save_data(data_details, output_file):
                     "InfoAbsentName": entry.get("InfoAbsentName", "")
                 })
             else:
+                print(f"Debug: No match for subjecttext: {subjecttext}")  # Debug statement
                 filtered_data["unknown"].append(entry)
 
     with open(output_file, "w", encoding="utf-8") as file:
